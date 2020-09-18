@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content=
+            "width=device-width, initial-scale=1.0">
+    <title>
+        Draw with the mouse in a HTML5 canvas
+    </title>
+
+    <style>
+        * {
+            overflow: hidden;
+        }
+        body {
+            text-align: center;
+        }
+        h1 {
+            color: green;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>MNIST Digit Recogonizer</h1>
+
+    <b>Draw any single digit you want inside the green box below !</b>
+
+    <hr>
+
+    <canvas id="canvas" style="border:6px solid #008607; cursor: crosshair;"></canvas>
+    
+    <div id="debug" style="margin:65px; margin-top:100px;">
+        <input type="button" id="clearButton" value="Clear" style="">
+    </div>
+    <div>
+        <a href="#" class="myButton"><span style=" font-weight: 400; font-family: 'Open Sans', Helvetica;	"> Predict </span></a>
+    </div>
+    <div >
+        <h1 id="result" style="margin-right:20px; margin-top:300px;float:left;"><span> </span></h1>
+    </div>
+
+    <script src="../static/design.js"></script>
+
+    <script type="text/javascript"></script>
+
+    $(".myButton").click(function(){
+        var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        var canvasObj = document.getElementById("canvas");
+        var img = canvasObj.toDataURL();
+        $.ajax({
+            type: "POST",
+            url: $SCRIPT_ROOT + "/predict/",
+            data: img,
+            success: function(data){
+                $('#result').text(' Predicted Output: '+data);
+            }
+        });
+    });
+
+</body>
+
+</html>
